@@ -1,1326 +1,682 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SyenApp — AI Automation Analysis</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SyenApp — AI Agent Strategy Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f5f6f8;
-    --surface: #ffffff;
-    --surface2: #f0f2f5;
-    --border: #dde1e8;
-    --accent: #0066ff;
-    --accent2: #5b4de8;
-    --accent3: #e53e3e;
-    --accent4: #d97706;
-    --text: #1a1d23;
-    --muted: #6b7280;
-    --strong: #0055dd;
+  :root{
+    --bg:#f6f8fb;
+    --surface:#ffffff;
+    --surface-alt:#f2f5fa;
+    --border:#d9e1ec;
+    --border-strong:#c7d3e3;
+    --text:#18212f;
+    --text-soft:#425168;
+    --muted:#627187;
+    --accent:#2457ff;
+    --accent-soft:#e8efff;
+    --success:#0f8a5f;
+    --warning:#b66a00;
+    --danger:#c23b3b;
+    --purple:#6f4cff;
+    --shadow:0 10px 28px rgba(23, 35, 61, 0.07);
+    --radius:16px;
   }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(circle at top left, rgba(36,87,255,.06), transparent 28%),
+      radial-gradient(circle at top right, rgba(111,76,255,.05), transparent 24%),
+      var(--bg);
+    line-height:1.6;
   }
-
-  /* HEADER */
-  header {
-    padding: 36px 48px 0;
-    position: relative;
-    overflow: hidden;
+  .page{max-width:1400px;margin:0 auto;padding:28px 24px 48px;}
+  header{
+    background:linear-gradient(135deg,#ffffff 0%, #f7faff 100%);
+    border:1px solid var(--border);
+    border-radius:24px;
+    box-shadow:var(--shadow);
+    padding:36px 36px 24px;
+    margin-bottom:22px;
+    position:relative;
+    overflow:hidden;
   }
-  header::before {
-    content: '';
-    position: absolute;
-    top: -80px; left: -80px;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(0,102,255,0.06) 0%, transparent 70%);
-    pointer-events: none;
+  header::after{
+    content:'';
+    position:absolute;
+    inset:auto -80px -80px auto;
+    width:240px;height:240px;
+    background:radial-gradient(circle, rgba(36,87,255,.09), transparent 68%);
+    pointer-events:none;
   }
-  .header-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    opacity: 0.8;
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:14px;
   }
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -1px;
-    color: #0a0d14;
+  .eyebrow::before{content:'';width:34px;height:1px;background:var(--accent);opacity:.6;}
+  h1{
+    margin:0;font-size:clamp(32px,4vw,54px);line-height:1.05;
+    letter-spacing:-.03em;font-weight:800;color:var(--text);
   }
-  h1 span { color: var(--accent); }
-  .header-sub {
-    margin-top: 10px;
-    font-size: 14px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
+  h1 span{color:var(--accent)}
+  .header-sub{margin-top:12px;max-width:940px;color:var(--text-soft);font-size:15px;}
+  .header-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;padding:8px 12px;
+    border:1px solid var(--border);border-radius:999px;background:#fff;
+    font-size:12px;color:var(--text-soft);
   }
-
-  /* TABS */
-  .tab-bar {
-    display: flex;
-    gap: 4px;
-    padding: 32px 48px 0;
-    border-bottom: 1px solid var(--border);
-    position: relative;
+  .tabs{
+    display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px;position:sticky;top:0;z-index:10;
+    padding:14px 0 6px;background:linear-gradient(to bottom, rgba(246,248,251,.94), rgba(246,248,251,.82), rgba(246,248,251,0));
+    backdrop-filter:blur(8px);
   }
-  .tab-btn {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 12px 22px;
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    position: relative;
-    transition: color 0.2s;
-    letter-spacing: 0.3px;
-    white-space: nowrap;
+  .tab-btn{
+    border:1px solid var(--border);background:rgba(255,255,255,.9);color:var(--text-soft);
+    border-radius:12px;padding:12px 16px;font-weight:600;font-size:14px;cursor:pointer;transition:.18s ease;
   }
-  .tab-btn:hover { color: var(--text); }
-  .tab-btn.active { color: var(--accent); }
-  .tab-btn.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent);
-    border-radius: 2px 2px 0 0;
+  .tab-btn:hover{transform:translateY(-1px);border-color:var(--border-strong)}
+  .tab-btn.active{
+    color:var(--accent);border-color:rgba(36,87,255,.24);background:var(--accent-soft);
+    box-shadow:0 6px 18px rgba(36,87,255,.10);
   }
-  .tab-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: var(--border);
-    font-size: 10px;
-    font-family: 'DM Mono', monospace;
-    margin-right: 7px;
-    color: var(--muted);
-    transition: background 0.2s, color 0.2s;
+  .tab-number{font-family:'IBM Plex Mono',monospace;font-size:12px;margin-right:8px;opacity:.8;}
+  .panel{display:none}
+  .panel.active{display:block}
+  .section{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:24px;margin-bottom:20px;
   }
-  .tab-btn.active .tab-number {
-    background: rgba(0,102,255,0.12);
-    color: var(--accent);
+  .section-title{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:14px;
   }
-
-  /* PANELS */
-  .tab-panel { display: none; padding: 40px 48px 60px; animation: fadeIn 0.3s ease; }
-  .tab-panel.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* SECTION TITLE */
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 20px;
-    font-weight: 600;
+  .section h2{margin:0 0 8px;font-size:28px;line-height:1.15;letter-spacing:-.02em;}
+  .section p.lead{margin:0;color:var(--text-soft);max-width:980px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .rank-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .arch-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:stretch}
+  .arch.single{grid-template-columns:1fr}
+  .card{
+    background:linear-gradient(180deg,#fff 0%, #fbfcff 100%);
+    border:1px solid var(--border);border-radius:14px;padding:18px;
   }
-
-  /* ===== TAB 1: IDE COMPARISON ===== */
-  .ide-grid {
-    display: grid;
-    grid-template-columns: 180px repeat(5, 1fr);
-    gap: 0;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    font-size: 13px;
+  .card h3{margin:0 0 8px;font-size:18px;line-height:1.2}
+  .card p{margin:0;color:var(--text-soft);font-size:14px}
+  .mini{
+    font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;
+    text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;
   }
-
-  .ide-col-header {
-    background: var(--surface2);
-    padding: 16px 14px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-    position: relative;
+  .info-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px;}
+  .info-box{background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+  .info-box strong{display:block;font-size:13px;margin-bottom:4px;}
+  .info-box span{color:var(--text-soft);font-size:13px;}
+  table{
+    width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--border);
+    border-radius:16px;background:var(--surface);
   }
-  .ide-col-header:last-child { border-right: none; }
-  .ide-col-header .tool-tag {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    padding: 2px 7px;
-    border-radius: 20px;
-    margin-top: 5px;
-    font-weight: 500;
+  th,td{
+    padding:14px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border);
+    border-right:1px solid var(--border);font-size:13px;
   }
-  .tag-copilot { background: rgba(108,140,255,0.15); color: var(--accent2); }
-  .tag-cursor { background: rgba(255,108,108,0.12); color: #ff9898; }
-  .tag-antigravity { background: rgba(255,200,74,0.13); color: var(--accent4); }
-  .tag-windsurf { background: rgba(79,255,176,0.12); color: var(--accent); }
-  .tag-claude { background: rgba(180,100,255,0.13); color: #c47fff; }
-
-  .row-label {
-    background: var(--surface);
-    padding: 13px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    letter-spacing: 0.2px;
+  th:last-child, td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  thead th{background:linear-gradient(180deg,#f7faff 0%, #f1f5fc 100%);color:var(--text);font-weight:700;}
+  tbody tr:nth-child(even) td{background:#fcfdff}
+  .col-feature{
+    width:180px;font-family:'IBM Plex Mono',monospace;color:var(--text-soft);font-size:12px;
   }
-
-  .ide-cell {
-    padding: 12px 14px;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-    background: var(--surface);
-    font-size: 12px;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.5;
-    transition: background 0.15s;
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:11px;
+    font-weight:600;border:1px solid transparent;white-space:nowrap;
   }
-  .ide-cell:last-child { border-right: none; }
-  .ide-cell:hover { background: var(--surface2); }
-  .ide-grid > *:nth-last-child(-n+6) { border-bottom: none; }
-
-  /* strip even rows */
-  .row-group:nth-child(even) .ide-cell,
-  .row-group:nth-child(even) .row-label { background: #0e1116; }
-  .row-group:nth-child(even) .ide-cell:hover { background: var(--surface2); }
-
-  /* badges */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 9px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    font-weight: 500;
+  .b-strong{background:#ecf6f1;color:var(--success);border-color:rgba(15,138,95,.18)}
+  .b-partial{background:#fff6e8;color:var(--warning);border-color:rgba(182,106,0,.18)}
+  .b-limited{background:#fff0f0;color:var(--danger);border-color:rgba(194,59,59,.18)}
+  .b-no{background:#f0f3f7;color:var(--muted);border-color:var(--border)}
+  .b-high{background:#eaf1ff;color:var(--accent);border-color:rgba(36,87,255,.16)}
+  .b-purple{background:#f0ebff;color:var(--purple);border-color:rgba(111,76,255,.16)}
+  .tool-name{font-weight:700;font-size:14px;display:block;margin-bottom:4px;}
+  .tool-sub{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);
+    background:var(--surface-alt);border:1px solid var(--border);border-radius:999px;padding:3px 8px;
   }
-  .badge-strong { background: rgba(0,102,255,0.08); color: #0055cc; border: 1px solid rgba(0,102,255,0.2); }
-  .badge-partial { background: rgba(217,119,6,0.08); color: #b45309; border: 1px solid rgba(217,119,6,0.2); }
-  .badge-limited { background: rgba(220,38,38,0.07); color: #b91c1c; border: 1px solid rgba(220,38,38,0.15); }
-  .badge-no { background: rgba(107,114,128,0.08); color: var(--muted); border: 1px solid var(--border); }
-  .badge-yes { background: rgba(5,150,105,0.08); color: #047857; border: 1px solid rgba(5,150,105,0.2); }
-
-  /* AI level dots */
-  .ai-level { display: flex; gap: 4px; justify-content: center; }
-  .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--border);
+  .rank-card{
+    position:relative;border:1px solid var(--border);background:linear-gradient(180deg,#fff 0%,#f9fbff 100%);
+    border-radius:16px;padding:18px;overflow:hidden;
   }
-  .dot.filled { background: var(--accent); box-shadow: 0 0 4px rgba(0,102,255,0.3); }
-
-  /* pricing cells */
-  .price-text { font-size: 11px; line-height: 1.6; text-align: left; }
-  .price-free { color: #047857; font-weight: 500; }
-  .price-paid { color: #b45309; }
-
-  /* security */
-  .sec-list { text-align: left; font-size: 11px; line-height: 1.8; list-style: none; padding: 0; }
-  .sec-list li::before { content: '·  '; color: var(--accent); }
-
-  /* Ranking section */
-  .ranking-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-top: 32px;
+  .rank-card.best{border-color:rgba(36,87,255,.24); box-shadow:0 8px 22px rgba(36,87,255,.10)}
+  .rank-card .big{
+    position:absolute;top:10px;right:14px;font-size:42px;line-height:1;font-weight:800;color:rgba(24,33,47,.06);
   }
-  .rank-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 16px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s, transform 0.2s;
-    cursor: default;
+  .rank-card h3{margin:10px 0 8px;font-size:18px}
+  .rank-card p{margin:0;color:var(--text-soft);font-size:13px}
+  .rank-tag{
+    display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;
+    background:var(--surface-alt);border:1px solid var(--border);color:var(--text-soft);
   }
-  .rank-card:hover { transform: translateY(-3px); border-color: #b0b8c8; }
-  .rank-card.rank-1 { border-color: rgba(217,119,6,0.4); }
-  .rank-card.rank-3 { border-color: rgba(0,102,255,0.3); }
-  .rank-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 42px;
-    font-weight: 800;
-    opacity: 0.08;
-    position: absolute;
-    top: 8px; right: 12px;
-    line-height: 1;
+  .list{margin:0;padding-left:18px;color:var(--text-soft);}
+  .list li{margin:8px 0}
+  .compare-box{border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+  .compare-head{display:grid;grid-template-columns:repeat(3,1fr);}
+  .compare-head div{
+    padding:12px 14px;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;
+    letter-spacing:.08em;background:var(--surface-alt);border-right:1px solid var(--border);
   }
-  .rank-tool-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 6px;
+  .compare-head div:last-child{border-right:none}
+  .compare-row{display:grid;grid-template-columns:repeat(3,1fr);}
+  .compare-row > div{
+    padding:14px;border-top:1px solid var(--border);border-right:1px solid var(--border);font-size:14px;
   }
-  .rank-verdict {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.5;
+  .compare-row > div:last-child{border-right:none}
+  .compare-row:nth-child(even) > div{background:#fcfdff}
+  .phase{
+    position:relative;border:1px solid var(--border);border-radius:16px;padding:18px;
+    background:linear-gradient(180deg,#fff 0%,#fbfcff 100%);
   }
-  .rank-badge {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  .phase .num{
+    width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:var(--accent-soft);color:var(--accent);font-weight:800;margin-bottom:12px;
   }
-  .rb-best { background: rgba(0,102,255,0.08); color: #0055cc; border: 1px solid rgba(0,102,255,0.2); }
-  .rb-good { background: rgba(91,77,232,0.08); color: #4338ca; border: 1px solid rgba(91,77,232,0.2); }
-  .rb-limited { background: rgba(107,114,128,0.1); color: var(--muted); border: 1px solid var(--border); }
-
-  /* ===== TAB 2: AI AUTOMATION ANALYSIS ===== */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
+  .phase h3{margin:0 0 8px;font-size:18px}
+  .phase p{margin:0;color:var(--text-soft);font-size:14px}
+  .arch-box{
+    border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,#fff 0%,#f9fbff 100%);
+    padding:16px;
   }
-  .card-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 14px;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .arch-box h3{margin:0 0 10px;font-size:16px}
+  .arch-box ul{margin:0;padding-left:18px;color:var(--text-soft);font-size:13px;}
+  .arrow{text-align:center;color:var(--muted);font-size:20px;font-weight:700;line-height:1;}
+  .theme-note{
+    margin-top:12px;font-size:13px;color:var(--text-soft);background:var(--surface-alt);
+    border:1px solid var(--border);padding:12px 14px;border-radius:12px;
   }
-  .card-icon {
-    width: 28px; height: 28px;
-    border-radius: 7px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    flex-shrink: 0;
+  .footer-note{color:var(--muted);font-size:13px;margin-top:16px;}
+  @media (max-width:1100px){
+    .rank-grid,.timeline,.arch-row,.info-strip{grid-template-columns:1fr 1fr}
   }
-  .ci-blue { background: rgba(91,77,232,0.1); }
-  .ci-green { background: rgba(0,102,255,0.08); }
-  .ci-amber { background: rgba(217,119,6,0.1); }
-  .ci-red { background: rgba(220,38,38,0.08); }
-  .ci-purple { background: rgba(124,58,237,0.1); }
-
-  .option-list { list-style: none; padding: 0; }
-  .option-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    line-height: 1.5;
-  }
-  .option-list li:last-child { border-bottom: none; }
-  .opt-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    background: rgba(0,102,255,0.08);
-    padding: 2px 6px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .opt-title { font-weight: 500; color: var(--text); margin-bottom: 2px; font-size: 13px; }
-  .opt-desc { font-size: 12px; color: var(--muted); }
-
-  /* phases */
-  .phases { display: flex; gap: 0; margin-top: 20px; position: relative; }
-  .phases::before {
-    content: '';
-    position: absolute;
-    top: 20px; left: 20px; right: 20px;
-    height: 2px;
-    background: var(--border);
-    z-index: 0;
-  }
-  .phase {
-    flex: 1;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-  }
-  .phase-dot {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    background: var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    transition: border-color 0.2s;
-  }
-  .phase:nth-child(1) .phase-dot { border-color: var(--accent); color: var(--accent); }
-  .phase:nth-child(2) .phase-dot { border-color: var(--accent2); color: var(--accent2); }
-  .phase:nth-child(3) .phase-dot { border-color: var(--accent4); color: var(--accent4); }
-  .phase:nth-child(4) .phase-dot { border-color: #c47fff; color: #c47fff; }
-  .phase-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    margin-bottom: 5px;
-    color: #fff;
-  }
-  .phase-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
-
-  /* agent model */
-  .agent-model-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-bottom: 20px; }
-  .llm-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-  }
-  .llm-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    margin-bottom: 6px;
-  }
-  .llm-role {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-  }
-  .llm-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .llm-tag {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-family: 'DM Mono', monospace;
-    background: var(--surface2);
-    color: var(--muted);
-    border: 1px solid var(--border);
-  }
-
-  .use-case-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .uc-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .uc-card:hover { border-color: #2a3040; transform: translateY(-2px); }
-  .uc-icon { font-size: 20px; margin-bottom: 10px; }
-  .uc-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: #fff;
-  }
-  .uc-items { list-style: none; padding: 0; }
-  .uc-items li {
-    font-size: 11px;
-    color: var(--muted);
-    padding: 3px 0;
-    border-bottom: 1px solid rgba(30,36,48,0.5);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .uc-items li::before { content: '→'; color: var(--accent); font-size: 10px; }
-  .uc-items li:last-child { border-bottom: none; }
-
-  /* conflict table */
-  .conflict-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    font-size: 12px;
-  }
-  .conflict-cell {
-    padding: 12px 16px;
-    border-right: 1px solid var(--border);
-  }
-  .conflict-cell:last-child { border-right: none; }
-  .conflict-header { background: var(--surface2); font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
-  .conflict-body { background: var(--surface); color: var(--text); }
-  .conflict-body:first-child { color: var(--accent2); font-style: italic; }
-
-  /* ===== TAB 3: ARCHITECTURE ===== */
-  .arch-wrapper {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 32px;
-    overflow-x: auto;
-  }
-
-  .arch-diagram {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    min-width: 860px;
-  }
-
-  .arch-layer {
-    margin-bottom: 16px;
-    position: relative;
-  }
-
-  .arch-layer-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-
-  .arch-boxes {
-    display: flex;
-    gap: 12px;
-    align-items: stretch;
-    flex-wrap: wrap;
-  }
-
-  .arch-box {
-    flex: 1;
-    min-width: 140px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    position: relative;
-    transition: border-color 0.2s;
-  }
-  .arch-box:hover { border-color: #2d3545; }
-  .arch-box.highlight-green { border-color: rgba(79,255,176,0.25); }
-  .arch-box.highlight-blue { border-color: rgba(108,140,255,0.25); }
-  .arch-box.highlight-amber { border-color: rgba(255,200,74,0.2); }
-  .arch-box.highlight-purple { border-color: rgba(180,100,255,0.2); }
-  .arch-box.highlight-red { border-color: rgba(255,108,108,0.2); }
-
-  .arch-box-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 8px;
-  }
-  .arch-box-items {
-    list-style: none; padding: 0;
-  }
-  .arch-box-items li {
-    font-size: 10px;
-    color: var(--muted);
-    padding: 2px 0;
-    display: flex; align-items: flex-start; gap: 5px;
-  }
-  .arch-box-items li::before { content: '–'; color: var(--accent); flex-shrink: 0; }
-
-  .arch-arrow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 4px 0;
-    color: var(--muted);
-    font-size: 16px;
-  }
-
-  .arch-single-box {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid rgba(79,255,176,0.15);
-    border-radius: 8px;
-    padding: 14px 20px;
-    text-align: center;
-  }
-  .arch-single-box .arch-box-title { text-align: center; margin-bottom: 0; color: var(--accent); }
-
-  /* devops */
-  .devops-bar {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  .devops-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .devops-item::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-  }
-
-  /* arch legend */
-  .arch-legend {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-  .legend-dot {
-    width: 10px; height: 10px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-
-  /* scrollbar */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-  /* responsive */
-  @media(max-width: 900px) {
-    header, .tab-bar, .tab-panel { padding-left: 20px; padding-right: 20px; }
-    .two-col, .use-case-grid, .ranking-grid { grid-template-columns: 1fr 1fr; }
-    .agent-model-grid { grid-template-columns: 1fr; }
-    .ide-grid { grid-template-columns: 130px repeat(5, 1fr); font-size: 11px; }
-  }
-  @media(max-width: 600px) {
-    .two-col, .use-case-grid, .ranking-grid { grid-template-columns: 1fr; }
-    .tab-btn { padding: 10px 12px; font-size: 11px; }
+  @media (max-width:800px){
+    .grid-2,.rank-grid,.timeline,.arch-row,.compare-head,.compare-row,.info-strip{grid-template-columns:1fr}
+    .compare-head div, .compare-row > div{border-right:none}
+    .tabs{position:static}
+    .page{padding:16px}
+    header{padding:26px 20px 20px}
+    .section{padding:18px}
+    table{display:block;overflow:auto}
   }
 </style>
 </head>
 <body>
-
-<header>
-  <div class="header-label">SyenApp · Internal Intelligence Report</div>
-  <h1>AI Automation<br><span>Strategy & Tool Analysis</span></h1>
-  <p class="header-sub">Comprehensive evaluation across IDE tooling, automation use cases, and agent architecture</p>
-</header>
-
-<nav class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab(0)">
-    <span class="tab-number">1</span>IDE Comparison
-  </button>
-  <button class="tab-btn" onclick="switchTab(1)">
-    <span class="tab-number">2</span>AI Automation Analysis
-  </button>
-  <button class="tab-btn" onclick="switchTab(2)">
-    <span class="tab-number">3</span>Agent Architecture
-  </button>
-</nav>
-
-<!-- ===================== TAB 1 ===================== -->
-<div class="tab-panel active" id="panel-0">
-  <div class="section-title">AI-Based IDE Comparison · Copilot vs Cursor vs Antigravity vs Windsurf vs Claude Code</div>
-
-  <div class="ide-grid">
-    <!-- Headers -->
-    <div class="ide-col-header" style="background:var(--bg);border-right:1px solid var(--border);">
-      <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;">Feature</div>
+<div class="page">
+  <header>
+    <div class="eyebrow">SyenApp · Internal Analysis</div>
+    <h1>AI Automation <span>Strategy & Agent Design</span></h1>
+    <p class="header-sub">
+     </p>
+    <div class="header-meta">
+      <span class="pill">Primary phase: Coding Agent</span>
+      <span class="pill">Current stack: Node.js · React Native · Python · Elasticsearch</span>
+      <span class="pill">Recommendation: Start single-agent, scale to multi-agent later</span>
     </div>
-    <div class="ide-col-header">GitHub Copilot<br><span class="tool-tag tag-copilot">VS Code Ext</span></div>
-    <div class="ide-col-header">Cursor<br><span class="tool-tag tag-cursor">VS Code Fork</span></div>
-    <div class="ide-col-header">Antigravity<br><span class="tool-tag tag-antigravity">VS Code CIDE</span></div>
-    <div class="ide-col-header">Windsurf<br><span class="tool-tag tag-windsurf">Custom IDE</span></div>
-    <div class="ide-col-header">Claude Code<br><span class="tool-tag tag-claude">Terminal+IDE</span></div>
+  </header>
 
-    <!-- IDE Type row -->
-    <div class="row-label">IDE Type</div>
-    <div class="ide-cell" style="font-size:11px;">Adds AI to existing VS Code</div>
-    <div class="ide-cell" style="font-size:11px;">Modified VS Code for AI</div>
-    <div class="ide-cell" style="font-size:11px;">AI-first environment with agents</div>
-    <div class="ide-cell" style="font-size:11px;">Completely new editor for AI</div>
-    <div class="ide-cell" style="font-size:11px;">CLI + integrates into editors</div>
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="switchTab(0)"><span class="tab-number">01</span>IDE Comparison</button>
+    <button class="tab-btn" onclick="switchTab(1)"><span class="tab-number">02</span>AI Automation Analysis</button>
+    <button class="tab-btn" onclick="switchTab(2)"><span class="tab-number">03</span>Agent Architecture</button>
+  </nav>
 
-    <!-- AI Level -->
-    <div class="row-label">AI Level</div>
-    <div class="ide-cell"><div class="ai-level"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
-    <div class="ide-cell"><div class="ai-level"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></div></div>
-    <div class="ide-cell"><div class="ai-level"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></div></div>
-    <div class="ide-cell"><div class="ai-level"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></div></div>
-    <div class="ide-cell"><div class="ai-level"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></div></div>
-
-    <!-- Multi-file edits -->
-    <div class="row-label">Multi-file Edits</div>
-    <div class="ide-cell"><span class="badge badge-limited">Limited</span></div>
-    <div class="ide-cell"><span class="badge badge-strong">Strong</span></div>
-    <div class="ide-cell"><span class="badge badge-strong">Strong</span></div>
-    <div class="ide-cell"><span class="badge badge-strong">Strong</span></div>
-    <div class="ide-cell"><span class="badge badge-strong">Strong</span></div>
-
-    <!-- Autonomous agents -->
-    <div class="row-label">Autonomous Agents</div>
-    <div class="ide-cell"><span class="badge badge-limited">Limited</span></div>
-    <div class="ide-cell"><span class="badge badge-partial">Partial</span></div>
-    <div class="ide-cell"><span class="badge badge-strong">Strong</span></div>
-    <div class="ide-cell"><span class="badge badge-yes">Yes</span></div>
-    <div class="ide-cell"><span class="badge badge-yes">Yes</span></div>
-
-    <!-- Multi-agent -->
-    <div class="row-label">Multi-agent System</div>
-    <div class="ide-cell"><span class="badge badge-no">No</span></div>
-    <div class="ide-cell"><span class="badge badge-no">No</span></div>
-    <div class="ide-cell"><span class="badge badge-strong">Strong</span></div>
-    <div class="ide-cell"><span class="badge badge-partial">Partial</span></div>
-    <div class="ide-cell" style="font-size:11px;color:#c47fff;">Agent Teams</div>
-
-    <!-- Browser testing -->
-    <div class="row-label">Browser Testing</div>
-    <div class="ide-cell"><span class="badge badge-no">No</span></div>
-    <div class="ide-cell"><span class="badge badge-no">No</span></div>
-    <div class="ide-cell"><span class="badge badge-strong">Strong</span></div>
-    <div class="ide-cell"><span class="badge badge-no">No</span></div>
-    <div class="ide-cell"><span class="badge badge-no">No</span></div>
-
-    <!-- Codebase understanding -->
-    <div class="row-label">Codebase Understanding</div>
-    <div class="ide-cell" style="color:var(--accent4);">Medium</div>
-    <div class="ide-cell" style="color:var(--accent);">High</div>
-    <div class="ide-cell" style="color:var(--accent);">High</div>
-    <div class="ide-cell" style="color:var(--accent);">High</div>
-    <div class="ide-cell" style="color:#4fffb0;font-weight:600;">Very High</div>
-
-    <!-- Learning curve -->
-    <div class="row-label">Learning Curve</div>
-    <div class="ide-cell" style="color:#4fffb0;">Easy</div>
-    <div class="ide-cell" style="color:var(--accent4);">Medium</div>
-    <div class="ide-cell" style="color:var(--accent3);">High</div>
-    <div class="ide-cell" style="color:var(--accent4);">Medium</div>
-    <div class="ide-cell" style="color:var(--accent4);">Medium</div>
-
-    <!-- Stability -->
-    <div class="row-label">Stability</div>
-    <div class="ide-cell" style="color:#4fffb0;font-weight:600;">Very High</div>
-    <div class="ide-cell" style="color:var(--accent);">High</div>
-    <div class="ide-cell" style="color:var(--accent4);">Medium (new)</div>
-    <div class="ide-cell" style="color:var(--accent4);">Medium</div>
-    <div class="ide-cell" style="color:var(--accent);">High</div>
-
-    <!-- Enterprise readiness -->
-    <div class="row-label">Enterprise Readiness</div>
-    <div class="ide-cell"><span class="badge badge-strong">Strong</span></div>
-    <div class="ide-cell"><span class="badge badge-partial">Growing</span></div>
-    <div class="ide-cell"><span class="badge badge-no">Not Mature</span></div>
-    <div class="ide-cell"><span class="badge badge-partial">Growing</span></div>
-    <div class="ide-cell"><span class="badge badge-partial">Growing</span></div>
-
-    <!-- Pricing -->
-    <div class="row-label">Pricing</div>
-    <div class="ide-cell">
-      <div class="price-text">
-        <span class="price-free">Free:</span> ~2,000/mo<br>
-        <span class="price-paid">Pro: ~$10/mo</span><br>
-        Ent: ~$39/user
-      </div>
+  <section class="panel active">
+    <div class="section">
+      <div class="section-title">AI IDE Comparison</div>
+      <h2>Developer tooling options for SyenApp</h2>
+      <p class="lead">
+        This comparison focuses on practical adoption for a SyenApp engineering workflow rather than generic AI hype. The emphasis is on code generation, multi-file work, agentic behavior, enterprise readiness, and fit for a real development team.
+      </p>
     </div>
-    <div class="ide-cell">
-      <div class="price-text">
-        <span class="price-free">Free:</span> very limited<br>
-        <span class="price-paid">Pro: ~$20/mo</span><br>
-        Ultra: up to $200
-      </div>
-    </div>
-    <div class="ide-cell">
-      <div class="price-text">
-        <span class="price-free">Free:</span> Yes (preview)<br>
-        <span class="price-paid">Paid: TBD</span><br>
-        Usage-based likely
-      </div>
-    </div>
-    <div class="ide-cell">
-      <div class="price-text">
-        <span class="price-free">Free:</span> ~25 credits<br>
-        <span class="price-paid">Pro: ~$15/mo</span><br>
-        Teams: ~$30/user
-      </div>
-    </div>
-    <div class="ide-cell">
-      <div class="price-text">
-        <span class="price-paid">Pro: ~$20/mo</span><br>
-        API heavy: $50–100+<br>
-        No free tier
+
+    <div class="section">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-feature">Feature</th>
+            <th><span class="tool-name">GitHub Copilot</span><span class="tool-sub">VS Code extension</span></th>
+            <th><span class="tool-name">Cursor</span><span class="tool-sub">AI-first editor</span></th>
+            <th><span class="tool-name">Antigravity</span><span class="tool-sub">Agentic coding environment</span></th>
+            <th><span class="tool-name">Windsurf</span><span class="tool-sub">AI IDE</span></th>
+            <th><span class="tool-name">Claude Code</span><span class="tool-sub">Terminal + editor workflow</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-feature">Editor model</td>
+            <td>Adds AI to existing VS Code</td>
+            <td>Modified editor with integrated AI workflow</td>
+            <td>AI-first environment with strong agent behavior</td>
+            <td>Custom editor built around AI-assisted development</td>
+            <td>CLI-oriented flow that integrates with editor usage</td>
+          </tr>
+          <tr>
+            <td class="col-feature">Multi-file editing</td>
+            <td><span class="badge b-limited">Limited</span></td>
+            <td><span class="badge b-strong">Strong</span></td>
+            <td><span class="badge b-strong">Strong</span></td>
+            <td><span class="badge b-strong">Strong</span></td>
+            <td><span class="badge b-strong">Strong</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Autonomous / agentic work</td>
+            <td><span class="badge b-limited">Limited</span></td>
+            <td><span class="badge b-partial">Partial</span></td>
+            <td><span class="badge b-strong">Strong</span></td>
+            <td><span class="badge b-strong">Strong</span></td>
+            <td><span class="badge b-strong">Strong</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Codebase understanding</td>
+            <td><span class="badge b-partial">Medium</span></td>
+            <td><span class="badge b-high">High</span></td>
+            <td><span class="badge b-high">High</span></td>
+            <td><span class="badge b-high">High</span></td>
+            <td><span class="badge b-purple">Very high</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Learning curve</td>
+            <td><span class="badge b-strong">Easy</span></td>
+            <td><span class="badge b-partial">Medium</span></td>
+            <td><span class="badge b-limited">High</span></td>
+            <td><span class="badge b-partial">Medium</span></td>
+            <td><span class="badge b-partial">Medium</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Enterprise readiness</td>
+            <td><span class="badge b-strong">Strong</span></td>
+            <td><span class="badge b-partial">Growing</span></td>
+            <td><span class="badge b-limited">Not mature</span></td>
+            <td><span class="badge b-partial">Growing</span></td>
+            <td><span class="badge b-partial">Growing</span></td>
+          </tr>
+          <tr>
+            <td class="col-feature">Best fit for SyenApp now</td>
+            <td>Safe entry point for team-wide coding assistance</td>
+            <td>Good for focused engineering experimentation</td>
+            <td>Useful if the team wants aggressive agentic automation</td>
+            <td>Good balance of capability and usability</td>
+            <td>Strong for power users comfortable with terminal-led workflows</td>
+          </tr>
+          <tr>
+            <td class="col-feature">Security posture</td>
+            <td>Most established governance model among common dev tools</td>
+            <td>Reasonable privacy direction, still maturing for enterprise</td>
+            <td>Higher operational caution needed because of broader agent behavior</td>
+            <td>Moderate controls with improving team features</td>
+            <td>Depends heavily on API and workflow guardrails</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="theme-note">
+        Note: exact pricing, quotas, and security terms can change quickly. This table is positioned as a product-fit view, not a procurement document.
       </div>
     </div>
 
-    <!-- Security -->
-    <div class="row-label">Security</div>
-    <div class="ide-cell" style="padding:10px 12px;">
-      <ul class="sec-list">
-        <li>Strong enterprise controls</li>
-        <li>No training on biz code</li>
-        <li>Org policies + audit logs</li>
-      </ul>
-    </div>
-    <div class="ide-cell" style="padding:10px 12px;">
-      <ul class="sec-list">
-        <li>Good but evolving</li>
-        <li>Privacy mode available</li>
-        <li>Less mature enterprise</li>
-      </ul>
-    </div>
-    <div class="ide-cell" style="padding:10px 12px;">
-      <ul class="sec-list">
-        <li>Agents can access system</li>
-        <li>Limited governance</li>
-        <li>Browser access risk</li>
-      </ul>
-    </div>
-    <div class="ide-cell" style="padding:10px 12px;">
-      <ul class="sec-list">
-        <li>Moderate controls</li>
-        <li>SSO + RBAC available</li>
-        <li>Still maturing</li>
-      </ul>
-    </div>
-    <div class="ide-cell" style="padding:10px 12px;">
-      <ul class="sec-list">
-        <li>Strong model privacy</li>
-        <li>Depends on API usage</li>
-        <li>Risk w/o API guardrails</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Ranking -->
-  <div class="section-title" style="margin-top:40px;">Practical Ranking · Free Version · Ease of Learning & Adaptability</div>
-  <div class="ranking-grid">
-    <div class="rank-card rank-1">
-      <div class="rank-num">1</div>
-      <span class="rank-badge rb-good">Most Powerful</span>
-      <div class="rank-tool-name" style="color:var(--accent4);">Antigravity</div>
-      <div class="rank-verdict">Most powerful for complete automation but can be unstable. Best for teams that can handle the learning curve.</div>
-    </div>
-    <div class="rank-card">
-      <div class="rank-num">2</div>
-      <span class="rank-badge rb-good">Good Starter</span>
-      <div class="rank-tool-name" style="color:var(--accent2);">GitHub Copilot</div>
-      <div class="rank-verdict">Good starter tool. Usage limits and model options are restrictive for heavy development use.</div>
-    </div>
-    <div class="rank-card rank-3">
-      <div class="rank-num">3</div>
-      <span class="rank-badge rb-best">Best Balance</span>
-      <div class="rank-tool-name" style="color:var(--accent);">Windsurf</div>
-      <div class="rank-verdict">Best balance of features and free-tier limits. Wide range of development tasks. Recommended for SyenApp.</div>
-    </div>
-    <div class="rank-card">
-      <div class="rank-num">4</div>
-      <span class="rank-badge rb-limited">Too Limited</span>
-      <div class="rank-tool-name" style="color:#ff9898;">Cursor</div>
-      <div class="rank-verdict">Free tier is too limited for daily use. Pro pricing not justified at this stage.</div>
-    </div>
-    <div class="rank-card">
-      <div class="rank-num">5</div>
-      <span class="rank-badge rb-limited">Not Full IDE</span>
-      <div class="rank-tool-name" style="color:#c47fff;">Claude Code</div>
-      <div class="rank-verdict">Not a full IDE. Terminal-first approach is limiting for developers accustomed to GUI-based workflows.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== TAB 2 ===================== -->
-<div class="tab-panel" id="panel-1">
-  <div class="section-title">SyenApp AI Automation · Strategy, Use Cases & Agent Model</div>
-
-  <div class="two-col">
-    <!-- Goal -->
-    <div class="card">
-      <div class="card-title">
-        <div class="card-icon ci-green">🎯</div>
-        Agent Goal
+    <div class="section">
+      <div class="section-title">Practical recommendation</div>
+      <h2>Shortlist by adoption style</h2>
+      <div class="rank-grid">
+        <div class="rank-card best">
+          <div class="big">1</div>
+          <span class="rank-tag">Best balance</span>
+          <h3>Windsurf</h3>
+          <p>Strong fit if the goal is agentic coding without immediately forcing the team into a terminal-first workflow.</p>
+        </div>
+        <div class="rank-card">
+          <div class="big">2</div>
+          <span class="rank-tag">Safest rollout</span>
+          <h3>GitHub Copilot</h3>
+          <p>Best for low-friction adoption if the organization wants to start with familiar editor usage and stronger governance comfort.</p>
+        </div>
+        <div class="rank-card">
+          <div class="big">3</div>
+          <span class="rank-tag">Power users</span>
+          <h3>Claude Code</h3>
+          <p>Very capable for developers who are comfortable with a more advanced CLI-oriented workflow and stronger model reasoning.</p>
+        </div>
+        <div class="rank-card">
+          <div class="big">4</div>
+          <span class="rank-tag">Focused experimentation</span>
+          <h3>Cursor</h3>
+          <p>Good for testing AI-first coding workflows, but the team should validate ROI before broad rollout.</p>
+        </div>
+        <div class="rank-card">
+          <div class="big">5</div>
+          <span class="rank-tag">Aggressive automation</span>
+          <h3>Antigravity</h3>
+          <p>Promising for agentic experimentation, but it is better suited to controlled exploration than broad engineering adoption at the initial stage.</p>
+        </div>
       </div>
-      <p style="font-size:13px;color:var(--muted);line-height:1.7;">Build a SyenApp AI Coding Agent that generates <strong style="color:#fff;">Node.js APIs</strong>, <strong style="color:#fff;">React Native components</strong>, and supports <strong style="color:#fff;">Python scripts</strong> aligned with the existing architecture — then expand into multi-team automation.</p>
-      <div style="margin-top:14px;padding:12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);font-size:12px;color:var(--muted);">
-        Agentic AI = systems that understand goals → break into steps → use tools → execute actions (rather than just respond)
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section">
+      <div class="section-title">AI Automation Analysis</div>
+      <h2>What we are actually trying to build</h2>
+      <p class="lead">
+        The immediate objective is not “AI for everything.” The realistic first milestone is a coding agent that understands SyenApp’s stack, patterns, and quality expectations. After that, the system can expand into UI, analytics, support, and marketing use cases.
+      </p>
+      <div class="info-strip">
+        <div class="info-box"><strong>Phase 1 target</strong><span>Coding agent for Node.js, React Native, and project-aligned Python support</span></div>
+        <div class="info-box"><strong>Key principle</strong><span>Use current architecture first; suggest improvements separately</span></div>
+        <div class="info-box"><strong>Knowledge model</strong><span>RAG with existing Elasticsearch plus a dedicated AI knowledge index</span></div>
+        <div class="info-box"><strong>Rollout model</strong><span>Single agent first, multi-agent later</span></div>
       </div>
     </div>
 
-    <!-- Implementation Options -->
-    <div class="card">
-      <div class="card-title">
-        <div class="card-icon ci-blue">⚙️</div>
-        4 Implementation Approaches
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">Implementation options</div>
+        <h2>Ways to build and access the agent</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div class="mini">Option 1</div>
+            <h3>Shared GPT / Claude Project</h3>
+            <p>Fastest path to evaluation. Good for uploading knowledge, testing prompts, and comparing model quality with minimal engineering work.</p>
+          </div>
+          <div class="card">
+            <div class="mini">Option 2</div>
+            <h3>Custom UI backed by API</h3>
+            <p>Internal portal with role-based access, logging, prompt templates, and room for future approvals or workflow controls.</p>
+          </div>
+          <div class="card">
+            <div class="mini">Option 3</div>
+            <h3>IDE / Extension access</h3>
+            <p>Best developer experience. The agent can be exposed to VS Code users through an internal service or compatible extension workflow.</p>
+          </div>
+          <div class="card">
+            <div class="mini">Option 4</div>
+            <h3>Full custom agent platform</h3>
+            <p>Most scalable long-term option, but it is too large for the initial SyenApp phase unless single-agent quality is already proven.</p>
+          </div>
+        </div>
       </div>
-      <ul class="option-list">
-        <li><span class="opt-num">01</span><div><div class="opt-title">Shared GPT / Claude Project</div><div class="opt-desc">Fastest to start. Custom GPTs or Claude Projects with shared team access. Best for pilot + experimentation.</div></div></li>
-        <li><span class="opt-num">02</span><div><div class="opt-title">Custom UI backed by API</div><div class="opt-desc">Internal SyenApp portal with frontend + backend. Role-based access, logs, approvals. Best for control.</div></div></li>
-        <li><span class="opt-num">03</span><div><div class="opt-title">IDE Integration (VS Code)</div><div class="opt-desc">Expose coding agent via VS Code. Developer-native workflow. Best for eng productivity.</div></div></li>
-        <li><span class="opt-num">04</span><div><div class="opt-title">Fully Custom Agent Platform</div><div class="opt-desc">Orchestrator + multi-agent + RAG + tool calling. Most scalable. Not for Phase 1.</div></div></li>
-      </ul>
-    </div>
-  </div>
 
-  <!-- Why not one agent -->
-  <div class="card" style="margin-bottom:20px;">
-    <div class="card-title">
-      <div class="card-icon ci-red">⚠️</div>
-      Why Not One Agent for Everything
+      <div class="section">
+        <div class="section-title">Why not one agent for everything</div>
+        <h2>Single-agent limitations</h2>
+        <p class="lead" style="margin-bottom:14px;">
+          A single all-purpose agent sounds efficient, but in practice it mixes conflicting rules, context, and quality standards across very different departments.
+        </p>
+        <div class="compare-box">
+          <div class="compare-head">
+            <div>Coding</div>
+            <div>Marketing</div>
+            <div>Support</div>
+          </div>
+          <div class="compare-row">
+            <div>Repo patterns, services, API conventions, tests, safety</div>
+            <div>Campaign history, segmentation, tone, funnel logic</div>
+            <div>FAQ flows, escalations, ticket triage, support policy</div>
+          </div>
+          <div class="compare-row">
+            <div>Needs precision and deterministic structure</div>
+            <div>Needs audience targeting and brand-sensitive messaging</div>
+            <div>Needs policy compliance and issue handling</div>
+          </div>
+          <div class="compare-row">
+            <div>Wrong rule application can create bad code</div>
+            <div>Wrong rule application creates poor campaign output</div>
+            <div>Wrong rule application causes unsafe support responses</div>
+          </div>
+        </div>
+        <div class="theme-note">
+          Clear example: if the same agent is asked to generate a Node.js API, draft a push campaign, and answer a reward-ticket dispute, it must switch among engineering, marketing, and support constraints. That makes prompts heavier and outputs less reliable.
+        </div>
+      </div>
     </div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">A single agent leads to <strong style="color:#ff9898;">conflicting instructions and poor accuracy</strong> because domain needs are fundamentally different:</p>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
-      <div style="background:var(--surface2);border-radius:8px;padding:14px;border:1px solid rgba(108,140,255,0.2);">
-        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Coding Agent</div>
-        <ul style="list-style:none;padding:0;font-size:11px;color:var(--muted);line-height:1.8;">
-          <li>→ Repo patterns</li>
-          <li>→ Service architecture</li>
-          <li>→ API conventions</li>
-          <li>→ Code safety</li>
-          <li>→ Testing expectations</li>
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">Model strategy</div>
+        <h2>Where each AI model fits</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div class="mini">Primary coding agent</div>
+            <h3>GPT</h3>
+            <p>Best suited for structured code generation, API scaffolding, and execution-oriented outputs.</p>
+          </div>
+          <div class="card">
+            <div class="mini">Knowledge reasoning</div>
+            <h3>Claude</h3>
+            <p>Useful for long-context analysis, documentation understanding, and business-logic-heavy reasoning.</p>
+          </div>
+          <div class="card">
+            <div class="mini">Optional exploration</div>
+            <h3>Grok</h3>
+            <p>More suitable for exploratory ideation and fast conversational thinking than for core enterprise coding automation.</p>
+          </div>
+          <div class="card">
+            <div class="mini">Document workflows</div>
+            <h3>Gemini</h3>
+            <p>Can be useful for broader document-heavy and multimodal workflows, but not the first recommendation for SyenApp coding automation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">RAG strategy</div>
+        <h2>How project knowledge should work</h2>
+        <ul class="list">
+          <li>Use the existing Elasticsearch cluster as the base data provider.</li>
+          <li>Create a dedicated knowledge index such as <strong>syenapp-ai-knowledge</strong> for code snippets, docs, schemas, and implementation references.</li>
+          <li>Do not mix raw analytics/event data directly into prompts without curation.</li>
+          <li>Start with keyword retrieval if needed, then add vector search only when relevance requires it.</li>
+          <li>Alternative RAG options remain open: PostgreSQL + pgvector, Pinecone, Weaviate, Azure AI Search, AWS Bedrock.</li>
         </ul>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:14px;border:1px solid rgba(255,200,74,0.2);">
-        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--accent4);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Marketing Agent</div>
-        <ul style="list-style:none;padding:0;font-size:11px;color:var(--muted);line-height:1.8;">
-          <li>→ Campaign history</li>
-          <li>→ User segments</li>
-          <li>→ Push templates</li>
-          <li>→ Funnel logic</li>
-          <li>→ Tone + compliance</li>
-        </ul>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:14px;border:1px solid rgba(255,108,108,0.2);">
-        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#ff9898;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Support Agent</div>
-        <ul style="list-style:none;padding:0;font-size:11px;color:var(--muted);line-height:1.8;">
-          <li>→ Ticket history</li>
-          <li>→ FAQ flows</li>
-          <li>→ Escalation rules</li>
-          <li>→ Issue triage</li>
-          <li>→ Response policy</li>
-        </ul>
-      </div>
-    </div>
-
-    <div style="border-top:1px solid var(--border);padding-top:14px;">
-      <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">3 Conflicts When Mixed</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-        <div style="background:#100c0c;border:1px solid rgba(255,108,108,0.15);border-radius:7px;padding:11px 13px;font-size:11px;color:#ff9898;">Prompts become too large and messy</div>
-        <div style="background:#100c0c;border:1px solid rgba(255,108,108,0.15);border-radius:7px;padding:11px 13px;font-size:11px;color:#ff9898;">Responses become generic or inconsistent</div>
-        <div style="background:#100c0c;border:1px solid rgba(255,108,108,0.15);border-radius:7px;padding:11px 13px;font-size:11px;color:#ff9898;">Agent applies wrong rules to wrong tasks</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LLM Preferences -->
-  <div class="section-title">LLM Model Strategy</div>
-  <div class="agent-model-grid" style="margin-bottom:20px;">
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div class="llm-card" style="border-color:rgba(108,140,255,0.25);">
-        <div class="llm-name" style="color:var(--accent2);">GPT</div>
-        <div class="llm-role">Primary Agent</div>
-        <div class="llm-tags">
-          <span class="llm-tag">Coding</span>
-          <span class="llm-tag">Execution</span>
-          <span class="llm-tag">Structured output</span>
-        </div>
-      </div>
-      <div class="llm-card" style="border-color:rgba(180,100,255,0.25);">
-        <div class="llm-name" style="color:#c47fff;">Claude</div>
-        <div class="llm-role">Knowledge Layer</div>
-        <div class="llm-tags">
-          <span class="llm-tag">Docs</span>
-          <span class="llm-tag">Large context</span>
-          <span class="llm-tag">Business logic</span>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div class="llm-card">
-          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--accent4);margin-bottom:4px;">Grok</div>
-          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">Brainstorming</div>
-        </div>
-        <div class="llm-card">
-          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#4ab8ff;margin-bottom:4px;">Gemini</div>
-          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">Doc-heavy flows</div>
+        <div class="theme-note">
+          Important clarification: Elasticsearch for RAG is an extension of the current setup, not a replacement. Existing analytics usage continues; the new knowledge index simply makes the data retrievable for AI.
         </div>
       </div>
     </div>
 
-    <div class="card" style="margin:0;">
-      <div class="card-title"><div class="card-icon ci-amber">🗂</div>RAG & Knowledge Sources</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-        <div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Primary: Elasticsearch</div>
-          <ul style="list-style:none;padding:0;font-size:12px;color:var(--muted);line-height:1.8;">
-            <li>→ Use existing cluster</li>
-            <li>→ New index: syenapp-ai-knowledge</li>
-            <li>→ No new infrastructure</li>
-          </ul>
+    <div class="section">
+      <div class="section-title">Action plan</div>
+      <h2>Initial rollout for SyenApp</h2>
+      <div class="timeline">
+        <div class="phase">
+          <div class="num">1</div>
+          <h3>Build one coding agent</h3>
+          <p>Scope it for Node.js first, then React Native, with Python only for established scripts and automation use cases.</p>
         </div>
-        <div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Alternatives</div>
-          <ul style="list-style:none;padding:0;font-size:12px;color:var(--muted);line-height:1.8;">
-            <li>→ PostgreSQL + pgvector</li>
-            <li>→ Pinecone / Weaviate</li>
-            <li>→ AWS Bedrock</li>
-            <li>→ Azure AI Search</li>
-          </ul>
+        <div class="phase">
+          <div class="num">2</div>
+          <h3>Add curated project knowledge</h3>
+          <p>Upload or index sample APIs, schemas, ES queries, architecture notes, and KT documentation.</p>
         </div>
-      </div>
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Knowledge Sources</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--muted);">Git Repos (Node, Angular, RN)</span>
-        <span style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--muted);">Jira + KT Docs</span>
-        <span style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--muted);">API Contracts</span>
-        <span style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--muted);">DB Schemas</span>
-        <span style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--muted);">Marketing Data</span>
-        <span style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--muted);">ES Analytics</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Use Cases -->
-  <div class="section-title">Domain-Specific Agent Use Cases</div>
-  <div class="use-case-grid" style="margin-bottom:32px;">
-    <div class="uc-card" style="border-color:rgba(108,140,255,0.2);">
-      <div class="uc-icon">💻</div>
-      <div class="uc-name" style="color:var(--accent2);">Coding Agent</div>
-      <ul class="uc-items">
-        <li>Node.js API generation</li>
-        <li>Service scaffolding</li>
-        <li>DB schema creation</li>
-        <li>Test generation</li>
-        <li>Code review + fix</li>
-      </ul>
-    </div>
-    <div class="uc-card" style="border-color:rgba(79,255,176,0.15);">
-      <div class="uc-icon">🎨</div>
-      <div class="uc-name" style="color:var(--accent);">UI/UX Agent</div>
-      <ul class="uc-items">
-        <li>React Native screens</li>
-        <li>UX flow generation</li>
-        <li>Component library</li>
-        <li>Angular templates</li>
-        <li>Design-to-code</li>
-      </ul>
-    </div>
-    <div class="uc-card" style="border-color:rgba(255,200,74,0.15);">
-      <div class="uc-icon">📢</div>
-      <div class="uc-name" style="color:var(--accent4);">Marketing Agent</div>
-      <ul class="uc-items">
-        <li>Push campaigns</li>
-        <li>Funnel automation</li>
-        <li>User segmentation</li>
-        <li>Content generation</li>
-        <li>A/B test analysis</li>
-      </ul>
-    </div>
-    <div class="uc-card" style="border-color:rgba(255,108,108,0.15);">
-      <div class="uc-icon">🎧</div>
-      <div class="uc-name" style="color:#ff9898;">Support Agent</div>
-      <ul class="uc-items">
-        <li>Auto ticket replies</li>
-        <li>FAQ chatbot</li>
-        <li>Escalation routing</li>
-        <li>Issue triage</li>
-        <li>Reward query handling</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Phases -->
-  <div class="section-title">Implementation Phases</div>
-  <div class="card">
-    <div class="phases">
-      <div class="phase">
-        <div class="phase-dot">1</div>
-        <div class="phase-label">Coding Agent</div>
-        <div class="phase-desc">Start simple. Node.js + React Native. Validate outputs.</div>
-      </div>
-      <div class="phase">
-        <div class="phase-dot">2</div>
-        <div class="phase-label">Add RAG</div>
-        <div class="phase-desc">Inject SyenApp codebase, docs, schemas into context.</div>
-      </div>
-      <div class="phase">
-        <div class="phase-dot">3</div>
-        <div class="phase-label">Team UI</div>
-        <div class="phase-desc">Internal portal with RBAC, logging, approvals.</div>
-      </div>
-      <div class="phase">
-        <div class="phase-dot">4</div>
-        <div class="phase-label">Multi-agent</div>
-        <div class="phase-desc">Separate agents per domain. Orchestrator layer. Full automation.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== TAB 3 ===================== -->
-<div class="tab-panel" id="panel-2">
-  <div class="section-title">SyenApp AI Agent Architecture · Full System Diagram</div>
-
-  <div class="arch-wrapper">
-    <div class="arch-diagram">
-
-      <!-- Users -->
-      <div class="arch-layer">
-        <div class="arch-layer-label">Entry Point</div>
-        <div class="arch-single-box">
-          <div class="arch-box-title">👥 Users / Teams — Dev · QA · Marketing · Support</div>
+        <div class="phase">
+          <div class="num">3</div>
+          <h3>Compare access modes</h3>
+          <p>Evaluate GPT/Claude shared setup, custom API/UI, and IDE-based access with real engineering tasks.</p>
+        </div>
+        <div class="phase">
+          <div class="num">4</div>
+          <h3>Expand only after validation</h3>
+          <p>Once coding quality is proven, split into multi-agent roles for support, marketing, analytics, and UI/UX.</p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="arch-arrow">↓</div>
+  <section class="panel">
+    <div class="section">
+      <div class="section-title">Agent architecture</div>
+      <h2>Recommended system design for SyenApp</h2>
+      <p class="lead">
+        This is the target architecture direction, but only the coding-agent slice should be implemented first. The larger multi-agent layout is shown to support future planning and PO discussions.
+      </p>
+    </div>
 
-      <!-- Gateway -->
-      <div class="arch-layer">
-        <div class="arch-layer-label">AI Gateway Layer</div>
-        <div class="arch-boxes">
-          <div class="arch-box highlight-green" style="flex:none;width:100%;">
-            <div class="arch-box-title">🔐 AI Gateway — Single Entry API (Node.js)</div>
-            <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:6px;">
-              <span style="font-size:11px;color:var(--muted);">→ Auth / Rate Limit</span>
-              <span style="font-size:11px;color:var(--muted);">→ Request Routing</span>
-              <span style="font-size:11px;color:var(--muted);">→ Logging / Audit</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="arch-arrow">↓</div>
-
-      <!-- Core Layer -->
-      <div class="arch-layer">
-        <div class="arch-layer-label">Core Processing Layer</div>
-        <div class="arch-boxes">
-          <div class="arch-box highlight-blue">
-            <div class="arch-box-title">📝 Prompt Engine</div>
-            <ul class="arch-box-items">
-              <li>Templates</li>
-              <li>Coding standards</li>
-              <li>Business rules</li>
-            </ul>
-          </div>
-          <div class="arch-box highlight-amber">
-            <div class="arch-box-title">🤖 Agent Orchestrator</div>
-            <ul class="arch-box-items">
-              <li>LangChain / CrewAI</li>
-              <li>Task distribution</li>
-              <li>Multi-agent workflow</li>
-            </ul>
-          </div>
-          <div class="arch-box highlight-purple">
-            <div class="arch-box-title">🔍 Context Manager (RAG)</div>
-            <ul class="arch-box-items">
-              <li>Vector Search</li>
-              <li>Version awareness</li>
-              <li>Semantic retrieval</li>
+    <div class="section">
+      <div class="arch">
+        <div class="arch-row arch single">
+          <div class="arch-box">
+            <h3>Users / Teams</h3>
+            <ul>
+              <li>Developers</li>
+              <li>QA</li>
+              <li>Marketing</li>
+              <li>Support</li>
             </ul>
           </div>
         </div>
-      </div>
 
-      <div class="arch-arrow">↓</div>
+        <div class="arrow">↓</div>
 
-      <!-- LLM + Knowledge -->
-      <div class="arch-layer">
-        <div class="arch-layer-label">Intelligence Layer</div>
-        <div class="arch-boxes">
-          <div class="arch-box highlight-blue" style="flex:0.8;">
-            <div class="arch-box-title">🧠 LLM Layer</div>
-            <ul class="arch-box-items">
-              <li><strong style="color:var(--accent2);">GPT</strong> — Primary coding</li>
-              <li><strong style="color:#c47fff;">Claude</strong> — Long context, docs</li>
-              <li><strong style="color:var(--accent4);">Grok</strong> — Brainstorming</li>
-              <li><strong style="color:#4ab8ff;">Gemini</strong> — Doc workflows</li>
+        <div class="arch-row arch single">
+          <div class="arch-box">
+            <h3>AI Gateway / Integration Layer</h3>
+            <ul>
+              <li>Recommended first choice: Node.js, because it matches the existing SyenApp backend and team workflow</li>
+              <li>Responsibilities: auth, routing, logging, prompt handling, tool invocation</li>
+              <li>Alternative preference: Python for later heavy AI/RAG pipelines if needed</li>
             </ul>
           </div>
-          <div class="arch-box highlight-green" style="flex:2;">
-            <div class="arch-box-title">📚 Knowledge Layer</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;">
-              <ul class="arch-box-items">
-                <li>Git Repos (Node, Angular, RN)</li>
-                <li>Jira + KT Docs</li>
-                <li>API Contracts</li>
-              </ul>
-              <ul class="arch-box-items">
-                <li>DB Schemas</li>
-                <li>Marketing Data</li>
-                <li>Elasticsearch Analytics</li>
-              </ul>
-            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="arch-row">
+          <div class="arch-box">
+            <h3>Prompt Engine</h3>
+            <ul>
+              <li>Project-specific instructions</li>
+              <li>Code output format</li>
+              <li>Best-practice suggestion mode</li>
+            </ul>
+          </div>
+          <div class="arch-box">
+            <h3>Agent Logic</h3>
+            <ul>
+              <li>Single coding agent first</li>
+              <li>Multi-agent orchestration later</li>
+              <li>LangChain or similar only when required</li>
+            </ul>
+          </div>
+          <div class="arch-box">
+            <h3>Context / RAG</h3>
+            <ul>
+              <li>Existing Elasticsearch cluster</li>
+              <li>Dedicated AI knowledge index</li>
+              <li>Keyword now, vector later if needed</li>
+            </ul>
+          </div>
+          <div class="arch-box">
+            <h3>Model Layer</h3>
+            <ul>
+              <li>GPT for coding</li>
+              <li>Claude for long-context reasoning</li>
+              <li>Optional: Grok / Gemini for niche workflows</li>
+            </ul>
           </div>
         </div>
-      </div>
 
-      <div class="arch-arrow">↓</div>
+        <div class="arrow">↓</div>
 
-      <!-- Tool Execution -->
-      <div class="arch-layer">
-        <div class="arch-layer-label">Tool Execution</div>
-        <div class="arch-boxes">
-          <div class="arch-box" style="flex:none;width:100%;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
-            <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#fff;margin-right:6px;">⚡ Tool Layer:</div>
-            <span style="background:rgba(108,140,255,0.12);border:1px solid rgba(108,140,255,0.2);color:var(--accent2);padding:4px 12px;border-radius:6px;font-size:11px;">Code Generator</span>
-            <span style="background:rgba(79,255,176,0.1);border:1px solid rgba(79,255,176,0.2);color:var(--accent);padding:4px 12px;border-radius:6px;font-size:11px;">API Builder</span>
-            <span style="background:rgba(255,200,74,0.1);border:1px solid rgba(255,200,74,0.2);color:var(--accent4);padding:4px 12px;border-radius:6px;font-size:11px;">UI Generator</span>
-            <span style="background:rgba(180,100,255,0.1);border:1px solid rgba(180,100,255,0.2);color:#c47fff;padding:4px 12px;border-radius:6px;font-size:11px;">Query Builder</span>
-            <span style="background:rgba(255,108,108,0.1);border:1px solid rgba(255,108,108,0.2);color:#ff9898;padding:4px 12px;border-radius:6px;font-size:11px;">Automation Bots</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="arch-arrow">↓</div>
-
-      <!-- Domain Agents -->
-      <div class="arch-layer">
-        <div class="arch-layer-label">Domain-Specific AI Agents</div>
-        <div class="arch-boxes">
-          <div class="arch-box highlight-blue">
-            <div class="arch-box-title" style="color:var(--accent2);">💻 Coding Agent</div>
-            <ul class="arch-box-items">
+        <div class="arch-row">
+          <div class="arch-box">
+            <h3>Coding Agent</h3>
+            <ul>
               <li>Node.js APIs</li>
-              <li>Services / Microservices</li>
-              <li>DB schema design</li>
-              <li>Python scripts</li>
+              <li>React Native components</li>
+              <li>Python scripts where already relevant</li>
             </ul>
           </div>
-          <div class="arch-box highlight-green">
-            <div class="arch-box-title" style="color:var(--accent);">🎨 UI/UX Agent</div>
-            <ul class="arch-box-items">
-              <li>React Native screens</li>
-              <li>UX flows</li>
-              <li>Angular components</li>
+          <div class="arch-box">
+            <h3>UI / UX Agent</h3>
+            <ul>
+              <li>Future phase</li>
+              <li>Screen generation</li>
+              <li>Design-to-code workflows</li>
             </ul>
           </div>
-          <div class="arch-box highlight-amber">
-            <div class="arch-box-title" style="color:var(--accent4);">📢 Marketing Agent</div>
-            <ul class="arch-box-items">
-              <li>Campaigns</li>
-              <li>Push logic</li>
-              <li>Funnel analysis</li>
+          <div class="arch-box">
+            <h3>Marketing Agent</h3>
+            <ul>
+              <li>Future phase</li>
+              <li>Campaigns and segmentation</li>
+              <li>Content automation</li>
             </ul>
           </div>
-          <div class="arch-box highlight-red">
-            <div class="arch-box-title" style="color:#ff9898;">🎧 Support Agent</div>
-            <ul class="arch-box-items">
-              <li>Chatbot</li>
-              <li>Auto replies</li>
-              <li>FAQ + triage</li>
+          <div class="arch-box">
+            <h3>Support Agent</h3>
+            <ul>
+              <li>Future phase</li>
+              <li>FAQ and ticket assistance</li>
+              <li>Escalation-aware flows</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="arch-row">
+          <div class="arch-box">
+            <h3>Execution Systems</h3>
+            <ul>
+              <li>Node.js services</li>
+              <li>React Native / Angular UI</li>
+              <li>Elasticsearch / Kibana</li>
+              <li>Notifications and automation services</li>
+            </ul>
+          </div>
+          <div class="arch-box">
+            <h3>Governance</h3>
+            <ul>
+              <li>RBAC / access control</li>
+              <li>Logging / audit trail</li>
+              <li>Approval for risky actions</li>
+            </ul>
+          </div>
+          <div class="arch-box">
+            <h3>Deployment</h3>
+            <ul>
+              <li>CI/CD</li>
+              <li>AWS hosting</li>
+              <li>Monitoring and alerts</li>
+            </ul>
+          </div>
+          <div class="arch-box">
+            <h3>Improvement Loop</h3>
+            <ul>
+              <li>Prompt refinement</li>
+              <li>Task evaluation</li>
+              <li>Measured rollout expansion</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="arch-arrow">↓</div>
-
-      <!-- Integration Layer -->
-      <div class="arch-layer">
-        <div class="arch-layer-label">Integration / Execution Layer</div>
-        <div class="arch-boxes">
-          <div class="arch-box">
-            <div class="arch-box-title">Node.js APIs</div>
-            <ul class="arch-box-items"><li>Microservices</li></ul>
-          </div>
-          <div class="arch-box">
-            <div class="arch-box-title">React Native / Angular</div>
-            <ul class="arch-box-items"><li>UI Layer</li></ul>
-          </div>
-          <div class="arch-box">
-            <div class="arch-box-title">Elasticsearch + Kibana</div>
-            <ul class="arch-box-items"><li>Analytics</li></ul>
-          </div>
-          <div class="arch-box">
-            <div class="arch-box-title">Notification Services</div>
-            <ul class="arch-box-items"><li>Push / Email</li></ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="arch-arrow">↓</div>
-
-      <!-- DevOps -->
-      <div class="arch-layer">
-        <div class="arch-layer-label">DevOps / Deployment</div>
-        <div class="devops-bar">
-          <div class="devops-item">CI/CD (Bitbucket / GitHub Actions)</div>
-          <div class="devops-item">AWS (EC2, Lambda, S3)</div>
-          <div class="devops-item">Monitoring (Logs + Alerts)</div>
-          <div class="devops-item">Access Control (SSO + RBAC)</div>
-        </div>
-      </div>
-
-      <!-- Legend -->
-      <div class="arch-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(79,255,176,0.5);"></div>Primary / Core</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(108,140,255,0.5);"></div>LLM / Intelligence</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,200,74,0.5);"></div>Orchestration</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(180,100,255,0.5);"></div>Knowledge / Context</div>
-        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,108,108,0.5);"></div>Domain Agents</div>
+      <div class="footer-note">
+        Final recommendation: implement the coding-agent slice first, keep the architecture extensible, and avoid building a broad multi-agent platform until the first phase proves quality, usability, and governance.
       </div>
     </div>
-  </div>
-
-  <!-- Final recommendation -->
-  <div class="card" style="margin-top:20px;border-color:rgba(79,255,176,0.2);">
-    <div class="card-title"><div class="card-icon ci-green">✅</div>Final Recommendation</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-      <div style="background:var(--surface2);border-radius:8px;padding:14px;border:1px solid rgba(79,255,176,0.1);">
-        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Start Simple</div>
-        <p style="font-size:12px;color:var(--muted);line-height:1.6;">Begin with coding agent using existing Node.js + React Native stack. No new infrastructure needed.</p>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:14px;border:1px solid rgba(255,200,74,0.1);">
-        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--accent4);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Validate First</div>
-        <p style="font-size:12px;color:var(--muted);line-height:1.6;">Test with real developer tasks. Measure output quality before expanding to other domains or teams.</p>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:14px;border:1px solid rgba(180,100,255,0.1);">
-        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#c47fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Scale Gradually</div>
-        <p style="font-size:12px;color:var(--muted);line-height:1.6;">Add RAG, then UI, then multi-agent as confidence and requirements grow. Don't build everything at once.</p>
-      </div>
-    </div>
-  </div>
+  </section>
 </div>
 
 <script>
-  function switchTab(index) {
-    document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === index));
-    document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i === index));
+  function switchTab(index){
+    document.querySelectorAll('.tab-btn').forEach((btn,i)=>btn.classList.toggle('active', i===index));
+    document.querySelectorAll('.panel').forEach((panel,i)=>panel.classList.toggle('active', i===index));
+    window.scrollTo({top:0, behavior:'smooth'});
   }
 </script>
 </body>
