@@ -37,7 +37,7 @@
       var(--bg);
     line-height:1.6;
   }
-  .page{max-width:1400px;margin:0 auto;padding:28px 24px 48px;}
+  .page{max-width:auto;margin:0 auto;padding:28px 24px 48px;}
   header{
     background:linear-gradient(135deg,#ffffff 0%, #f7faff 100%);
     border:1px solid var(--border);
@@ -77,7 +77,7 @@
   }
   .tabs{
     display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px;position:sticky;top:0;z-index:10;
-    padding:14px 0 6px;background:linear-gradient(to bottom, rgba(246,248,251,.94), rgba(246,248,251,.82), rgba(246,248,251,0));
+    padding:14px 0 6px;backgrounds:linear-gradient(to bottom, rgba(246,248,251,.94), rgba(246,248,251,.82), rgba(246,248,251,0));
     backdrop-filter:blur(8px);
   }
   .tab-btn{
@@ -234,6 +234,7 @@
     <button class="tab-btn active" onclick="switchTab(0)"><span class="tab-number">01</span>IDE Comparison</button>
     <button class="tab-btn" onclick="switchTab(1)"><span class="tab-number">02</span>AI Automation Analysis</button>
     <button class="tab-btn" onclick="switchTab(2)"><span class="tab-number">03</span>Agent Architecture</button>
+    <button class="tab-btn" onclick="switchTab(3)"> <span class="tab-number">04</span>Task Automation</button>
   </nav>
 
   <section class="panel active">
@@ -368,309 +369,536 @@
       </div>
     </div>
   </section>
+<section class="panel">
+  <div class="section">
+    <div class="section-title">AI Automation Analysis</div>
+    <h2>What is Agentic AI?</h2>
+    <p class="lead">
+      Agentic AI refers to systems that can understand a goal, break it into steps, use tools (APIs, databases, services), 
+      and generate actionable outputs instead of just answering questions.
+      
+      Instead of being a passive assistant, AI acts as a  <b>task executor across different workflows</b>.
+    </p>
+  </div>
 
-  <section class="panel">
-    <div class="section">
-      <div class="section-title">AI Automation Analysis</div>
-      <h2>What we are actually trying to build</h2>
-      <p class="lead">
-        The immediate objective is not “AI for everything.” The realistic first milestone is a coding agent that understands SyenApp’s stack, patterns, and quality expectations. After that, the system can expand into UI, analytics, support, and marketing use cases.
-      </p>
-      <div class="info-strip">
-        <div class="info-box"><strong>Phase 1 target</strong><span>Coding agent for Node.js, React Native, and project-aligned Python support</span></div>
-        <div class="info-box"><strong>Key principle</strong><span>Use current architecture first; suggest improvements separately</span></div>
-        <div class="info-box"><strong>Knowledge model</strong><span>RAG with existing Elasticsearch plus a dedicated AI knowledge index</span></div>
-        <div class="info-box"><strong>Rollout model</strong><span>Single agent first, multi-agent later</span></div>
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <div class="section">
-        <div class="section-title">Implementation options</div>
-        <h2>Ways to build and access the agent</h2>
-        <div class="grid-2">
-          <div class="card">
-            <div class="mini">Option 1</div>
-            <h3>Shared GPT / Claude Project</h3>
-            <p>Fastest path to evaluation. Good for uploading knowledge, testing prompts, and comparing model quality with minimal engineering work.</p>
-          </div>
-          <div class="card">
-            <div class="mini">Option 2</div>
-            <h3>Custom UI backed by API</h3>
-            <p>Internal portal with role-based access, logging, prompt templates, and room for future approvals or workflow controls.</p>
-          </div>
-          <div class="card">
-            <div class="mini">Option 3</div>
-            <h3>IDE / Extension access</h3>
-            <p>Best developer experience. The agent can be exposed to VS Code users through an internal service or compatible extension workflow.</p>
-          </div>
-          <div class="card">
-            <div class="mini">Option 4</div>
-            <h3>Full custom agent platform</h3>
-            <p>Most scalable long-term option, but it is too large for the initial SyenApp phase unless single-agent quality is already proven.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-title">Why not one agent for everything</div>
-        <h2>Single-agent limitations</h2>
-        <p class="lead" style="margin-bottom:14px;">
-          A single all-purpose agent sounds efficient, but in practice it mixes conflicting rules, context, and quality standards across very different departments.
-        </p>
-        <div class="compare-box">
-          <div class="compare-head">
-            <div>Coding</div>
-            <div>Marketing</div>
-            <div>Support</div>
-          </div>
-          <div class="compare-row">
-            <div>Repo patterns, services, API conventions, tests, safety</div>
-            <div>Campaign history, segmentation, tone, funnel logic</div>
-            <div>FAQ flows, escalations, ticket triage, support policy</div>
-          </div>
-          <div class="compare-row">
-            <div>Needs precision and deterministic structure</div>
-            <div>Needs audience targeting and brand-sensitive messaging</div>
-            <div>Needs policy compliance and issue handling</div>
-          </div>
-          <div class="compare-row">
-            <div>Wrong rule application can create bad code</div>
-            <div>Wrong rule application creates poor campaign output</div>
-            <div>Wrong rule application causes unsafe support responses</div>
-          </div>
-        </div>
-        <div class="theme-note">
-          Clear example: if the same agent is asked to generate a Node.js API, draft a push campaign, and answer a reward-ticket dispute, it must switch among engineering, marketing, and support constraints. That makes prompts heavier and outputs less reliable.
-        </div>
-      </div>
-    </div>
+  <!-- USE CASES -->
+  <div class="section">
+    <div class="section-title">SyenApp Use Cases</div>
+    <h2>Where AI can be applied</h2>
 
     <div class="grid-2">
-      <div class="section">
-        <div class="section-title">Model strategy</div>
-        <h2>Where each AI model fits</h2>
-        <div class="grid-2">
-          <div class="card">
-            <div class="mini">Primary coding agent</div>
-            <h3>GPT</h3>
-            <p>Best suited for structured code generation, API scaffolding, and execution-oriented outputs.</p>
-          </div>
-          <div class="card">
-            <div class="mini">Knowledge reasoning</div>
-            <h3>Claude</h3>
-            <p>Useful for long-context analysis, documentation understanding, and business-logic-heavy reasoning.</p>
-          </div>
-          <div class="card">
-            <div class="mini">Optional exploration</div>
-            <h3>Grok</h3>
-            <p>More suitable for exploratory ideation and fast conversational thinking than for core enterprise coding automation.</p>
-          </div>
-          <div class="card">
-            <div class="mini">Document workflows</div>
-            <h3>Gemini</h3>
-            <p>Can be useful for broader document-heavy and multimodal workflows, but not the first recommendation for SyenApp coding automation.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-title">RAG strategy</div>
-        <h2>How project knowledge should work</h2>
+      <div class="card">
+        <h3>Development</h3>
         <ul class="list">
-          <li>Use the existing Elasticsearch cluster as the base data provider.</li>
-          <li>Create a dedicated knowledge index such as <strong>syenapp-ai-knowledge</strong> for code snippets, docs, schemas, and implementation references.</li>
-          <li>Do not mix raw analytics/event data directly into prompts without curation.</li>
-          <li>Start with keyword retrieval if needed, then add vector search only when relevance requires it.</li>
-          <li>Alternative RAG options remain open: PostgreSQL + pgvector, Pinecone, Weaviate, Azure AI Search, AWS Bedrock.</li>
+          <li>Generate Node.js APIs and services,Python Scripts </li>
+          <li>Create MongoDB / Elasticsearch queries</li>
+          <li>Assist React Native UI development</li>
+          <li>Suggest optimizations and best practices</li>
         </ul>
-        <div class="theme-note">
-          Important clarification: Elasticsearch for RAG is an extension of the current setup, not a replacement. Existing analytics usage continues; the new knowledge index simply makes the data retrievable for AI.
-        </div>
+      </div>
+
+      <div class="card">
+        <h3>Analytics</h3>
+        <ul class="list">
+          <li>Analyze user behavior from Elasticsearch</li>
+          <li>Generate insights from dashboards</li>
+          <li>Identify drop-offs and trends</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Marketing</h3>
+        <ul class="list">
+          <li>Create campaign ideas and content</li>
+          <li>Suggest user targeting strategies</li>
+          <li>Automate engagement workflows</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Support</h3>
+        <ul class="list">
+          <li>Generate support responses</li>
+          <li>Assist ticket resolution</li>
+          <li>Provide FAQ-based automation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO INTEGRATE -->
+  <div class="section">
+    <div class="section-title">Integration Approach</div>
+    <h2>How AI fits into SyenApp</h2>
+
+    <div class="compare-box">
+      <div class="compare-head">
+        <div>Input</div>
+        <div>AI Processing</div>
+        <div>Output</div>
+      </div>
+
+      <div class="compare-row">
+        <div>User / Team Request</div>
+        <div>Agent + Knowledge + Model</div>
+        <div>Action / Suggestion</div>
+      </div>
+
+      <div class="compare-row">
+        <div>Example: Create API</div>
+        <div>Fetch code patterns + DB structure</div>
+        <div>Controller + Service</div>
+      </div>
+
+      <div class="compare-row">
+        <div>Example: Marketing campaign</div>
+        <div>Analyze user data + trends</div>
+        <div>Campaign suggestion</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SINGLE VS MULTI -->
+  <div class="section">
+    <div class="section-title">Architecture Decision</div>
+    <h2>Single Agent vs Multi-Agent</h2>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Single Agent</h3>
+        <p>
+          One AI handling all tasks.  
+          Easy to start but becomes complex and less accurate when handling different domains.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Multi-Agent</h3>
+        <p>
+          Separate agents for each domain (development, marketing, support, analytics).  
+          More accurate and scalable.
+        </p>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-title">Action plan</div>
-      <h2>Initial rollout for SyenApp</h2>
-      <div class="timeline">
-        <div class="phase">
-          <div class="num">1</div>
-          <h3>Build one coding agent</h3>
-          <p>Scope it for Node.js first, then React Native, with Python only for established scripts and automation use cases.</p>
-        </div>
-        <div class="phase">
-          <div class="num">2</div>
-          <h3>Add curated project knowledge</h3>
-          <p>Upload or index sample APIs, schemas, ES queries, architecture notes, and KT documentation.</p>
-        </div>
-        <div class="phase">
-          <div class="num">3</div>
-          <h3>Compare access modes</h3>
-          <p>Evaluate GPT/Claude shared setup, custom API/UI, and IDE-based access with real engineering tasks.</p>
-        </div>
-        <div class="phase">
-          <div class="num">4</div>
-          <h3>Expand only after validation</h3>
-          <p>Once coding quality is proven, split into multi-agent roles for support, marketing, analytics, and UI/UX.</p>
-        </div>
-      </div>
+    <div class="theme-note">
+      Recommendation: Start simple and expand into multi-agent based on usage.
     </div>
-  </section>
+  </div>
+
+  <!-- KNOWLEDGE -->
+  <div class="section">
+    <div class="section-title">Knowledge Layer</div>
+    <h2>How AI understands SyenApp</h2>
+
+    <ul class="list">
+      <li>Use existing Elasticsearch as data source</li>
+      <li>Create new index for AI knowledge</li>
+      <li>Store APIs, queries, docs, workflows</li>
+      <li>Provide context dynamically to AI</li>
+    </ul>
+
+    <div class="theme-note">
+      This ensures AI generates output based on SyenApp logic, not generic responses.
+    </div>
+  </div>
+</section>
 
   <section class="panel">
-    <div class="section">
-      <div class="section-title">Agent architecture</div>
-      <h2>Recommended system design for SyenApp</h2>
-      <p class="lead">
-      </p>
-    </div>
+  <div class="section">
+    <div class="section-title">Agent Architecture</div>
+    <h2>How AI Automation works in SyenApp</h2>
+    <p class="lead">
+      AI automation works as a flow where requests from different teams are processed by agents 
+      using project knowledge and AI models to generate actionable outputs.
+    </p>
+  </div>
 
-    <div class="section">
-      <div class="arch">
-        <div class="arch-row arch single">
-          <div class="arch-box">
-            <h3>Users / Teams</h3>
-            <ul>
-              <li>Developers</li>
-              <li>QA</li>
-              <li>Marketing</li>
-              <li>Support</li>
-            </ul>
-          </div>
-        </div>
+  <!-- FLOW -->
+  <div class="section">
+    <div class="section-title">End-to-End Flow</div>
+    <h2>Request → AI → Output</h2>
 
-        <div class="arrow">↓</div>
-
-        <div class="arch-row arch single">
-          <div class="arch-box">
-            <h3>AI Gateway / Integration Layer</h3>
-            <ul>
-              <li>Recommended first choice: Node.js, because it matches the existing SyenApp backend and team workflow</li>
-              <li>Responsibilities: auth, routing, logging, prompt handling, tool invocation</li>
-              <li>Alternative preference: Python for later heavy AI/RAG pipelines if needed</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="arrow">↓</div>
-
-        <div class="arch-row">
-          <div class="arch-box">
-            <h3>Prompt Engine</h3>
-            <ul>
-              <li>Project-specific instructions</li>
-              <li>Code output format</li>
-              <li>Best-practice suggestion mode</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>Agent Logic</h3>
-            <ul>
-              <li>Single coding agent first</li>
-              <li>Multi-agent orchestration later</li>
-              <li>LangChain or similar only when required</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>Context / RAG</h3>
-            <ul>
-              <li>Existing Elasticsearch cluster</li>
-              <li>Dedicated AI knowledge index</li>
-              <li>Keyword now, vector later if needed</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>Model Layer</h3>
-            <ul>
-              <li>GPT for coding</li>
-              <li>Claude for long-context reasoning</li>
-              <li>Optional: Grok / Gemini for niche workflows</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="arrow">↓</div>
-
-        <div class="arch-row">
-          <div class="arch-box">
-            <h3>Coding Agent</h3>
-            <ul>
-              <li>Node.js APIs</li>
-              <li>React Native components</li>
-              <li>Python scripts where already relevant</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>UI / UX Agent</h3>
-            <ul>
-              <li>Future phase</li>
-              <li>Screen generation</li>
-              <li>Design-to-code workflows</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>Marketing Agent</h3>
-            <ul>
-              <li>Future phase</li>
-              <li>Campaigns and segmentation</li>
-              <li>Content automation</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>Support Agent</h3>
-            <ul>
-              <li>Future phase</li>
-              <li>FAQ and ticket assistance</li>
-              <li>Escalation-aware flows</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="arrow">↓</div>
-
-        <div class="arch-row">
-          <div class="arch-box">
-            <h3>Execution Systems</h3>
-            <ul>
-              <li>Node.js services</li>
-              <li>React Native / Angular UI</li>
-              <li>Elasticsearch / Kibana</li>
-              <li>Notifications and automation services</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>Governance</h3>
-            <ul>
-              <li>RBAC / access control</li>
-              <li>Logging / audit trail</li>
-              <li>Approval for risky actions</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>Deployment</h3>
-            <ul>
-              <li>CI/CD</li>
-              <li>AWS hosting</li>
-              <li>Monitoring and alerts</li>
-            </ul>
-          </div>
-          <div class="arch-box">
-            <h3>Improvement Loop</h3>
-            <ul>
-              <li>Prompt refinement</li>
-              <li>Task evaluation</li>
-              <li>Measured rollout expansion</li>
-            </ul>
-          </div>
+    <div class="arch">
+      <div class="arch-row arch single">
+        <div class="arch-box">
+          <h3>1. User / Team</h3>
+          <ul>
+            <li>Developer, Marketing, Support, QA(Testing)</li>
+            <li>Provides requirement or query</li>
+          </ul>
         </div>
       </div>
 
-      <div class="footer-note">
-        Final recommendation: implement the coding-agent slice first, keep the architecture extensible, and avoid building a broad multi-agent platform until the first phase proves quality, usability, and governance.
+      <div class="arrow">↓</div>
+
+      <div class="arch-row arch single">
+        <div class="arch-box">
+          <h3>2. Access Layer</h3>
+          <ul>
+            <li>AI UI / GPT / Claude / IDE</li>
+            <li>Entry point for all users</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="arch-row arch single">
+        <div class="arch-box">
+          <h3>3. Integration Layer</h3>
+          <ul>
+            <li>Node.js (recommended)</li>
+            <li>Handles routing, auth, logging</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="arch-row">
+        <div class="arch-box">
+          <h3>4. Knowledge (RAG)</h3>
+          <ul>
+            <li>Elasticsearch</li>
+            <li>APIs, docs, queries</li>
+          </ul>
+        </div>
+
+        <div class="arch-box">
+          <h3>5. AI Model</h3>
+          <ul>
+            <li>GPT / Claude</li>
+          </ul>
+        </div>
+
+        <div class="arch-box">
+          <h3>6. Agent Logic</h3>
+          <ul>
+            <li>Task understanding</li>
+            <li>Response generation</li>
+          </ul>
+        </div>
+
+        <div class="arch-box">
+          <h3>7. Output</h3>
+          <ul>
+            <li>Code / Insight / Response / TestCases</li>
+          </ul>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+
+  <!-- MULTI AGENT -->
+  <div class="section">
+    <div class="section-title">Multi-Agent Integration</div>
+    <h2>How different teams use AI</h2>
+
+    <div class="arch">
+      <div class="arch-row arch single">
+        <div class="arch-box">
+          <h3>Coordinator Agent</h3>
+          <ul>
+            <li>Identifies request type</li>
+            <li>Routes to correct agent</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="arch-row">
+        <div class="arch-box">
+          <h3>Development Agent</h3>
+          <ul>
+            <li>Code generation</li>
+          </ul>
+        </div>
+
+        <div class="arch-box">
+          <h3>Marketing Agent</h3>
+          <ul>
+            <li>Campaigns</li>
+          </ul>
+        </div>
+
+        <div class="arch-box">
+          <h3>Analytics Agent</h3>
+          <ul>
+            <li>Insights</li>
+          </ul>
+        </div>
+
+        <div class="arch-box">
+          <h3>Support Agent</h3>
+          <ul>
+            <li>Responses</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="theme-note">
+      Each agent uses shared knowledge but follows its own logic, improving accuracy and scalability.
+    </div>
+  </div>
+</section>
+<section class="panel">
+  <div class="section">
+    <div class="section-title">Operational Automation</div>
+    <h2>Current repetitive tasks and how AI can automate them</h2>
+    <p class="lead">
+      This section maps actual repetitive tasks currently handled manually across SyenApp operations, QA, product validation, support, and campaign execution.
+      The focus is not just on what can be automated, but also how the automation should work in real time and why it adds value.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Automation Priority View</div>
+    <h2>Daily and weekly manual tasks</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Current Manual Process</th>
+          <th>Automation Scope</th>
+          <th>How it can work in real time</th>
+          <th>Why this matters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Check India & US Purchases</strong></td>
+          <td>Daily manual verification in Elasticsearch using alert index and link tracking index to confirm whether purchase transactions are logged correctly.</td>
+          <td><span class="badge b-strong">Fully Automatable</span></td>
+          <td>
+            Build an automated validator that runs on schedule or event trigger, checks purchase-related indexes, compares expected purchase patterns, and flags missing / mismatched transactions in a dashboard or Slack/email alert.
+          </td>
+          <td>
+            Removes repetitive log checking and helps detect transaction tracking issues early before they affect reporting or rewards.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Mailtag Correction (IND & US)</strong></td>
+          <td>Mail tagging is already supported by an ML model, but occasional manual verification is still done when tagging looks incorrect.</td>
+          <td><span class="badge b-no">Not Required Now</span></td>
+          <td>
+            Keep this under exception-based review only. Instead of building a separate AI flow immediately, track recurring tagging errors and improve the existing ML model or confidence thresholds.
+          </td>
+          <td>
+            This is not the best first automation priority because a system already exists. Improvement should focus on model accuracy rather than creating a parallel agent.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>SyenApp Daily Testing</strong></td>
+          <td>Manual testing across multiple IND and US scenarios.</td>
+          <td><span class="badge b-partial">Partially Automatable</span></td>
+          <td>
+            Use test automation tools for execution and AI for test-case generation, expected-result generation, and failure summarization. AI can also convert requirement changes into updated test scenarios.
+          </td>
+          <td>
+            Reduces effort in repetitive testing and reporting, but execution still depends on a proper automation framework such as Selenium/Appium/API suites.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Validate Not Working Products (US)</strong></td>
+          <td>Weekly manual validation of broken or non-working products.</td>
+          <td><span class="badge b-strong">Fully Automatable</span></td>
+          <td>
+            A monitoring job can regularly crawl product URLs, validate response status, redirect behavior, retailer landing correctness, and affiliate continuity. Invalid items can be flagged or auto-disabled.
+          </td>
+          <td>
+            Converts a weekly manual check into continuous validation, reducing user-facing broken product experiences.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Validation of Newly Imported Products (QA US)</strong></td>
+          <td>Manual or script-based validation after product refresh/import.</td>
+          <td><span class="badge b-strong">Fully Automatable</span></td>
+          <td>
+            Create a post-import validation layer that checks data completeness, image presence, pricing, category mapping, URL health, and duplicate patterns immediately after import.
+          </td>
+          <td>
+            Ensures imported product quality at scale and reduces the need for manual QA sampling.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>New / Uninstall / Suspect User Validation</strong></td>
+          <td>Daily verification using MoEngage and RCMT, with suspicious users manually identified and marked.</td>
+          <td><span class="badge b-high">Highly Automatable</span></td>
+          <td>
+            Build a behavior-scoring workflow using user activity, install/uninstall patterns, session irregularities, and abuse indicators. AI can classify risky accounts and send them for review or auto-mark based on thresholds.
+          </td>
+          <td>
+            Improves fraud detection, reduces manual user pattern analysis, and provides faster operational response.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Insta Account Verification & Redeem Checks</strong></td>
+          <td>Manual verification of redemption requests and whether reward conditions were completed.</td>
+          <td><span class="badge b-strong">Fully Automatable</span></td>
+          <td>
+            Pull task-completion signals from activity logs, social verification markers, and redemption rules; auto-approve, auto-reject, or route edge cases for review.
+          </td>
+          <td>
+            Reduces approval delays, avoids inconsistent checks, and minimizes reward abuse.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Daily Deals & Festive HTML Creation</strong></td>
+          <td>Manual creation of HTML content/pages for deals and campaign events.</td>
+          <td><span class="badge b-strong">Fully Automatable</span></td>
+          <td>
+            Use an AI content generator connected to product feeds and campaign rules to create HTML blocks, banners, copy, and themed layouts automatically for review before publishing.
+          </td>
+          <td>
+            Saves time, improves consistency, and allows faster campaign turnaround during high-volume event periods.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Banner Image Validation</strong></td>
+          <td>Manual checking of banner links, image load, and redirect correctness.</td>
+          <td><span class="badge b-strong">Fully Automatable</span></td>
+          <td>
+            A crawler can validate image availability, destination URL, redirect chain, and product relevance, then generate a pass/fail report before banners go live.
+          </td>
+          <td>
+            Prevents campaign errors and broken user journeys caused by invalid banners.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Brand Validation (IND)</strong></td>
+          <td>Manual + partial automation to validate affiliate links, response codes, and deactivate invalid brands.</td>
+          <td><span class="badge b-strong">Fully Automatable</span></td>
+          <td>
+            Build a recurring validation service that checks endpoints, affiliate response integrity, redirect validity, and DB status; auto-deactivate brands when failure rules are met.
+          </td>
+          <td>
+            Reduces operational dependency on manual checks and improves real-time brand health accuracy.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Collecting Products for Relevant Sales</strong></td>
+          <td>Manual product collection across platforms for campaign preparation.</td>
+          <td><span class="badge b-high">Highly Automatable</span></td>
+          <td>
+            Use AI-assisted aggregation to pull products from multiple sources, then filter by discount, retailer, category, seasonality, trend, and campaign relevance.
+          </td>
+          <td>
+            Speeds up campaign planning and improves product relevance compared with purely manual collection.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Merchant Verification (PROD IND & US)</strong></td>
+          <td>Manual verification through email/server review to confirm merchant authenticity.</td>
+          <td><span class="badge b-high">Highly Automatable</span></td>
+          <td>
+            AI can analyze merchant email domains, website legitimacy signals, business category, content consistency, and risk indicators, then produce a verification score with approval recommendation.
+          </td>
+          <td>
+            Accelerates onboarding and reduces repetitive manual verification effort.
+          </td>
+        </tr>
+
+        <tr>
+          <td><strong>Remove Not Working Products & Refresh (US)</strong></td>
+          <td>Manual + script-based cleanup and refresh after failed product validation.</td>
+          <td><span class="badge b-strong">Fully Automatable</span></td>
+          <td>
+            Integrate failed-product detection with the catalog refresh pipeline so broken products are automatically removed or replaced with validated alternatives.
+          </td>
+          <td>
+            Keeps the product catalog healthier in real time and reduces dependence on manual cleanup cycles.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Automation Layer Design</div>
+    <h2>How these automations should be implemented</h2>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>1. Trigger Layer</h3>
+        <ul class="list">
+          <li>Scheduled jobs for daily / weekly validations</li>
+          <li>Event-based triggers after product import, banner creation, redemption request, or merchant submission</li>
+          <li>Manual trigger option for operations team when needed</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>2. Data Source Layer</h3>
+        <ul class="list">
+          <li>Elasticsearch indexes for purchases, tracking, product data, and analytics</li>
+          <li>MoEngage / RCMT for user-state validation</li>
+          <li>Product URLs, banner links, merchant websites, and campaign data sources</li>
+          <li>Internal DB / config collections for approval rules and thresholds</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>3. Decision Layer</h3>
+        <ul class="list">
+          <li>Rule-based validation for deterministic checks</li>
+          <li>AI-based classification for anomaly, fraud, or relevance scoring</li>
+          <li>Threshold-driven pass / fail / review outcome</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>4. Action Layer</h3>
+        <ul class="list">
+          <li>Auto-approve or auto-reject where confidence is high</li>
+          <li>Create review queue for borderline cases</li>
+          <li>Send alerts to team on failures</li>
+          <li>Update DB / product status / campaign asset status automatically when safe</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recommended rollout</div>
+    <h2>What to automate first</h2>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Immediate Priority</h3>
+        <p>Check India & US Purchases, Validate Not Working Products, Banner Validation, Remove & Refresh Failed Products.</p>
+      </div>
+
+      <div class="card">
+        <h3>High-Value Next</h3>
+        <p>New / Uninstall / Suspect User Validation, Insta Redeem Checks, Brand Validation, Merchant Verification.</p>
+      </div>
+
+      <div class="card">
+        <h3>Assisted Automation</h3>
+        <p>Daily Testing and Daily Deals / Festive HTML Creation should combine AI assistance with human review rather than full autonomy at the start.</p>
+      </div>
+    </div>
+
+    <div class="theme-note">
+      Recommended principle: automate high-volume, repetitive, rule-heavy tasks first. Keep human approval for tasks that affect rewards, onboarding, or customer-facing publishing until confidence is proven.
+    </div>
+  </div>
+</section>
 </div>
 
 <script>
